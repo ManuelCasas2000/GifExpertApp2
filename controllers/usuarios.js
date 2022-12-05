@@ -8,7 +8,7 @@ const Usuario = require('../models/usuario');
 
 const usuariosGet = async(req = request, res = response) => {
 
-    const { limite = 5, desde = 0 } = req.query;
+    const { limite = 15, desde = 0 } = req.query;
     const query = { estado: true };
 
     const [ total, usuarios ] = await Promise.all([
@@ -67,13 +67,17 @@ const usuariosDelete = async(req, res = response) => {
 
     const { id } = req.params;
 
+    const uid = req.uid; // 151
+
     // Fisicamente lo borramos
     // const usuario = await Usuario.findByIdAndDelete( id );
 
     const usuario = await Usuario.findByIdAndUpdate( id, { estado: false } );
+    const usuarioAutenticado = req.usuario;
 
 
-    res.json(usuario);
+    // 152 res.json(usuario);
+    res.json({usuario, uid, usuarioAutenticado});
 }
 
 
